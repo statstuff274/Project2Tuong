@@ -1,13 +1,19 @@
 ---
 title: "Project 2 - Shiny (Mobile Device Usage)"
 author: "John Tuong"
+execute: 
+  warning: false
 format: html
 editor: visual
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
-> As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time. As someone who's interested in technology and curious about today's screen time, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application.
+## Introduction
+
+> As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time. As someone who's interested in technology and curious about the public's general use on mobile devices, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application. 
+
+## Preparing the app!
 
 ```{r}
 # Addition packages to download/to do from notes:
@@ -15,8 +21,8 @@ editor_options:
 # install.packages(shinyalert") - verify values
 
 # Use observeEvent() to look for changes in tab id (Flexible UI Layouts)
+# r4ds examples
 ```
-
 
 ```{r}
 # Installed rsconnect to connect R Studio with Shiny deployment website.
@@ -37,11 +43,11 @@ library(tidyverse)
 ```
 
 ```{r}
-# Read in mobile device usage .csv file as a tibble.
+# Read in mobile device usage .csv file as a tibble. --------------------------------
 mobdevdata <- as.tibble(read.csv("/Users/User/repos/Project2Tuong/user_behavior_dataset.csv", header = TRUE))
 
-# Checked to see if there are any missing values in the data set.
-print(colSums(is.na(mobdevdata))) # No missing values
+# Checked to see if there are any missing values in the data set. -------------------
+print(colSums(is.na(mobdevdata))) # No missing values!
 
 # Checked to see internal structure of mobdevdata (class of each column/how variables are stored, etc.).
 str(mobdevdata)
@@ -52,25 +58,119 @@ str(mobdevdata)
 head(mobdevdata)
 ```
 
-```{r}
-# Created one, two, and three-way tables of categorical variables to explore. The tables are created with one or a combination of these three categorical variables: operating system, gender, and user behavior class. addmargins used to find the row, column, and total sums.
+-   Created one, two, and three way contingency tables.
 
-# The one-way table below show that the majority of people use Android operating systems compared to iOS in this table - 554 Android users and 146 iOS users.
+```{r}
+# Created one, two, and three-way tables of categorical variables to explore. The tables are created with one or a combination of these three categorical variables: operating system, gender, and user behavior class. addmargins is used to find the row, column, and total sums.
+
+# The one-way table below show that the majority of people use Android operating systems (OS) compared to iOS in this table - 554 Android users and 146 iOS users.
 addmargins(table("operating system used?" = mobdevdata$Operating.System))
 
 # The two-way table below show that Android is the more popular mobile device among both genders. For this table, there's more male Android users (292) than female users (262), showcasing males having a slight preference for Androids. iOS shows a similar distribution between genders (74 for female and 72 for male).
 addmargins(table("operating system used?" = mobdevdata$Operating.System, 
       "  gender" = mobdevdata$Gender))
 
-# The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android uses, especially for user behavior class 2, 3, and 5.
+# The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android users, especially for user behavior class 2, 3, and 5.
 addmargins(table("operating system used?" = mobdevdata$Operating.System, 
       "  gender" = mobdevdata$Gender,
       "user behavior class" = mobdevdata$User.Behavior.Class))
 ```
 
+-   Created numerical summaries for quantitative variables at levels of categorical variables.
+
 ```{r}
-# Created numerical summaries for quantitative variables (screen on time and battery drain) at levels of categorical variables (operating system, gender, and user behavior class).
+# Created numerical summaries for quantitative variables (screen on time, battery drain, data usage) at levels of categorical variables (operating system, gender, and user behavior class). Here we're assigning num_summary and piping the mobdevdata data set to be grouped by the levels of the categorical variables then to summarize and provide Q1, Q3, min, max, mean, median, and standard deviation of the quantitative variables.
 
-
+num_summary <- mobdevdata |>
+  group_by(Operating.System, Gender, User.Behavior.Class) |>
+  summarize(across(c(Screen.On.Time..hours.day.,
+                   Battery.Drain..mAh.day.,
+                   Data.Usage..MB.day.),
+            list(min = min,
+                 Q1 = ~quantile(.x, probs = 0.25),
+                 median = median,
+                 Q3 = ~quantile(.x, probs = 0.75),
+                 max = max,
+                 mean = mean,
+                 sd = sd
+                 )))
+num_summary
 ```
+
+-   Create at least six plots. Four must display multivariate information.
+
+```{r}
+# Plot 1: Created a bar graph plot showcasing mobile device owned by operating system (Android users versus iOS users).
+bar_plot1 <- ggplot(data = mobdevdata |>
+              drop_na(Operating.System),
+              aes(x = Operating.System, fill = Operating.System)) + 
+            geom_bar() + 
+            ggtitle("Mobile Operating Systems Used") +
+            theme(plot.title = element_text(hjust = 0.5, face = "bold")) +
+            labs(subtitle = "Bar Graph Plot",
+                 x = "Operating System",
+                 y = "Amount of Mobile Devices") +
+            theme(plot.subtitle = element_text(hjust = 0.5)) +
+            scale_fill_discrete("Operating System")
+bar_plot1
+
+# As seen here, majority of mobile phone users from this data set are Android users. This is interesting because I didn't think Android had so much dominance in the mobile operating system; I always though it was a little closer, maybe 60/40, Android to iOS.
+```
+
+```{r}
+# Plot 2: Created a stacked bar plot showcasing the mobile device operating system usage by gender.
+stacked_plot2 <- ggplot(data = mobdevdata |>
+                  drop_na(Operating.System),
+                  aes(x = Operating.System, fill = Gender)) + 
+                geom_bar() + 
+                ggtitle("Mobile Operating Systems by Gender") +
+                theme(plot.title = element_text(hjust = 0.5, face = "bold")) +
+                labs(subtitle = "Stacked Bar Plot",
+                     x = "Operating System",
+                     y = "Amount of Mobile Devices \n by Gender") +
+                theme(plot.subtitle = element_text(hjust = 0.5)) +
+                scale_fill_discrete("Operating System")
+stacked_plot2
+
+# As seen here, this plot visually represents operating system usage by gender. The previous plot only showed the amount of mobile device users by operating, where as this plot further breaks it down and showcases the proportion of males/females that own a phone based on whether it's an Android or iOS. While Android has more users than both female and male iOS users, respectively, the distributions between male/female within their own operating system are pretty similar, close to 50/50 by gender.
+```
+
+```{r}
+# Plot 3: Created a side by side bar plot showcasing operating system usage based on user behavior class.
+
+side_plot3 <- ggplot(data = mobdevdata |>
+                drop_na(User.Behavior.Class),
+                aes(x = User.Behavior.Class, fill = Operating.System)) + 
+              geom_bar(position = "dodge") + 
+              ggtitle(label = "Mobile Operating Systems by User Behavior Class",
+                      subtitle = "Side-by-Side Bar Plot") +
+              theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                    plot.subtitle = element_text(hjust = 0.5)) +
+              labs(x = "User Behavior Class \n (1 = light usage, ..., 5 = heavy usage)",
+                   y = "Amount of Mobile Devices \n by Operating System") +
+              scale_fill_discrete("Operating System")
+side_plot3
+
+# As seen here, this side-by-side bar plot visualizes user behavior based on different operating systems. Side-by-side plots can sometimes allow for easier visual comparison of the values compared to stacked bar plots. From first glance, the total amount of light to extreme users per operating system are pretty similar and close in overall proportion. Class 1, light iOS users seem to be slightly different than rest, with a little less in number compared to the other iOS users by behavior, but not by much.  
+```
+
+```{r}
+# Plot 4: Created a histogram to check the frequency of daily mobile device battery drain by mobile operating system.
+
+histogram_plot4 <- ggplot(mobdevdata |>
+                    drop_na(Battery.Drain..mAh.day.)) +
+                  geom_histogram(aes(x = Battery.Drain..mAh.day., fill = Operating.System), 
+                    binwidth = 500, alpha = .75, position = "identity") +
+                  ggtitle(label = "Battery Drain by Operating System",
+                    subtitle = "Histogram Plot") +
+                  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                    plot.subtitle = element_text(hjust = 0.5)) +
+                  labs(x = "Daily Battery Drain (by mAh)",
+                    y = "Frequency") +
+                  scale_fill_discrete("Operating System")
+histogram_plot4
+
+# As seen below, this histogram shows the frequency/count at which the amount of battery mAh of phones are drained based on operating system. Unlike a stacked bar graph which compares two categorical variables and visually represents the length/proportion of the total bar, histograms showcase a distribution of continuous data/is a graphical representation of quantitative data. So when looking at this plot below, roughly 150 daily Android users and about 30-35 iOS users will drain their phone battery by 240 to 750 mAh everyday. As for those who drain their battery by an average of 3000 mAh (between 2750 and 3250) every day, that number is much less at about 47 Android users and about 17 iOS users. When comparing the frequencies across both operating systems, both OS's seem to have a very similar visual pattern of battery drain proportionally based on mAh from 750 mAh to 2750 mAh.
+```
+
 
