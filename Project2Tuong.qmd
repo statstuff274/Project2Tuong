@@ -155,7 +155,7 @@ side_plot3
 ```
 
 ```{r}
-# Plot 4: Created a histogram to check the frequency of daily mobile device battery drain by mobile operating system.
+# Plot 4: Created a histogram to observe the frequency of daily mobile device battery drain by mobile operating system.
 
 histogram_plot4 <- ggplot(mobdevdata |>
                     drop_na(Battery.Drain..mAh.day.)) +
@@ -173,4 +173,53 @@ histogram_plot4
 # As seen below, this histogram shows the frequency/count at which the amount of battery mAh of phones are drained based on operating system. Unlike a stacked bar graph which compares two categorical variables and visually represents the length/proportion of the total bar, histograms showcase a distribution of continuous data/is a graphical representation of quantitative data. So when looking at this plot below, roughly 150 daily Android users and about 30-35 iOS users will drain their phone battery by 240 to 750 mAh everyday. As for those who drain their battery by an average of 3000 mAh (between 2750 and 3250) every day, that number is much less at about 47 Android users and about 17 iOS users. When comparing the frequencies across both operating systems, both OS's seem to have a very similar visual pattern of battery drain proportionally based on mAh from 750 mAh to 2750 mAh.
 ```
 
+```{r}
+# Plot 5: Created a density plot (smoothed histogram) to observe screen time per day based on gender.
 
+density_plot5 <- ggplot(mobdevdata |>
+                    drop_na(Screen.On.Time..hours.day.), aes(x = Screen.On.Time..hours.day., fill = Gender)) + 
+                  geom_density(alpha = 0.5) +
+                  ggtitle(label = "Screen Time by Gender",
+                    subtitle = "Density Plot (Smoothed Histogram)") +
+                  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                    plot.subtitle = element_text(hjust = 0.5)) +
+                  labs(x = "Screen Time (hours per day)",
+                    y = "Density") +
+                  scale_fill_discrete("Gender")                
+density_plot5
+
+# Below is a density plot, a smooth curve that shows the distribution of the data. Similar to histograms except with an added curve on top, the curve represents the proportion of the data in the ranges rather than the frequency/counts like a histogram would. The x-axis showcases screen time per day and the y-axis represents the density, meaning the probability/how probable the different intervals for screen time are for each gender. Looking at this plot, we can see that males have higher screen times overall; however, females do seem to have a peak average of more screen time when hitting 3 hour and 25 minute mark to about the 7 hour and 25 minute mark. Interesting - I wonder why that might be the case.
+```
+
+```{r}
+# Plot 6: Created a scatter plot to observe correlations between screen time and data usage.
+
+scatter_plot6 <- ggplot(mobdevdata|>
+                    drop_na(Screen.On.Time..hours.day., Data.Usage..MB.day.), aes(x = Screen.On.Time..hours.day., y = Data.Usage..MB.day.)) +
+                  geom_jitter(width = 0.2, alpha = 0.6) +
+                  ggtitle(label = "Screen Time and Data Usage",
+                          subtitle = "Scatter Plot") +
+                  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                        plot.subtitle = element_text(hjust = 0.5)) +
+                  labs(x = "Screen Time (hours per day)", 
+                       y = "Data Usage \n (megabytes per day)") +
+                  scale_color_brewer(palette = "Accent")
+scatter_plot6
+
+# Below is a scatter plot between screen time and data usage; this is used in order to observe and determine if there may be a relationship between these two variables.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+# quantitative variables (screen on time, battery drain, data usage) at levels of 
+# categorical variables (operating system, gender, and user behavior class)

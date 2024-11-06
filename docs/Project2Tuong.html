@@ -432,7 +432,7 @@ operating system used? Female Male Sum
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, this side-by-side bar plot visualizes user behavior based on different operating systems. Side-by-side plots can sometimes allow for easier visual comparison of the values compared to stacked bar plots. From first glance, the total amount of light to extreme users per operating system are pretty similar and close in overall proportion. Class 1, light iOS users seem to be slightly different than rest, with a little less in number compared to the other iOS users by behavior, but not by much.  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Created a histogram to check the frequency of daily mobile device battery drain by mobile operating system.</span></span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Created a histogram to observe the frequency of daily mobile device battery drain by mobile operating system.</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>histogram_plot4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Battery.Drain..mAh.day.)) <span class="sc">+</span></span>
@@ -455,6 +455,58 @@ operating system used? Female Male Sum
 </div>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen below, this histogram shows the frequency/count at which the amount of battery mAh of phones are drained based on operating system. Unlike a stacked bar graph which compares two categorical variables and visually represents the length/proportion of the total bar, histograms showcase a distribution of continuous data/is a graphical representation of quantitative data. So when looking at this plot below, roughly 150 daily Android users and about 30-35 iOS users will drain their phone battery by 240 to 750 mAh everyday. As for those who drain their battery by an average of 3000 mAh (between 2750 and 3250) every day, that number is much less at about 47 Android users and about 17 iOS users. When comparing the frequencies across both operating systems, both OS's seem to have a very similar visual pattern of battery drain proportionally based on mAh from 750 mAh to 2750 mAh.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 5: Created a density plot (smoothed histogram) to observe screen time per day based on gender.</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>density_plot5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Screen.On.Time..hours.day.), <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">fill =</span> Gender)) <span class="sc">+</span> </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time by Gender"</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">subtitle =</span> <span class="st">"Density Plot (Smoothed Histogram)"</span>) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Gender"</span>)                </span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>density_plot5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a density plot, a smooth curve that shows the distribution of the data. Similar to histograms except with an added curve on top, the curve represents the proportion of the data in the ranges rather than the frequency/counts like a histogram would. The x-axis showcases screen time per day and the y-axis represents the density, meaning the probability/how probable the different intervals for screen time are for each gender. Looking at this plot, we can see that males have higher screen times overall; however, females do seem to have a peak average of more screen time when hitting 3 hour and 25 minute mark to about the 7 hour and 25 minute mark. Interesting - I wonder why that might be the case.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 6: Created a scatter plot to observe correlations between screen time and data usage.</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>scatter_plot6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata<span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Screen.On.Time..hours.day., Data.Usage..MB.day.), <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">y =</span> Data.Usage..MB.day.)) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time and Data Usage"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Scatter Plot"</span>) <span class="sc">+</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>, </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>) <span class="sc">+</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Accent"</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>scatter_plot6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a scatter plot between screen time and data usage; this is used in order to observe and determine if there may be a relationship between these two variables.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="quantitative-variables-screen-on-time-battery-drain-data-usage-at-levels-of" class="level1">
+<h1>quantitative variables (screen on time, battery drain, data usage) at levels of</h1>
+</section>
+<section id="categorical-variables-operating-system-gender-and-user-behavior-class" class="level1">
+<h1>categorical variables (operating system, gender, and user behavior class)</h1>
 
 
 </section>
