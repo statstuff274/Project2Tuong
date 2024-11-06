@@ -1,0 +1,30 @@
+---
+title: "Project 2 - Shiny (Mobile Device Usage)"
+author: "John Tuong"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# Installed rsconnect to connect R Studio with Shiny deployment website
+
+# install.packages('rsconnect')
+```
+```{r}
+rsconnect::setAccountInfo(name='tuongjohn',
+			  token='49C8DBAA2EF1F7B5CD386A06DCF0EB97',
+			  secret='b2XBkM4QOXdXImtie5MAsfq5iKXKdMZqTnFsy5jd')
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+read.csv("/Users/User/repos/Project2Tuong/user_behavior_dataset.csv")
+```
+
+
+
