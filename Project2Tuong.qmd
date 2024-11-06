@@ -7,24 +7,70 @@ editor_options:
   chunk_output_type: console
 ---
 
+> As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time. As someone who's interested in technology and curious about today's screen time, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application.
+
 ```{r}
-# Installed rsconnect to connect R Studio with Shiny deployment website
+# Addition packages to download/to do from notes:
+# install.packages("shinydashboard") - tabItems() - spinners, tabPanel() (37 Debug)
+# install.packages(shinyalert") - verify values
+
+# Use observeEvent() to look for changes in tab id (Flexible UI Layouts)
+```
+
+
+```{r}
+# Installed rsconnect to connect R Studio with Shiny deployment website.
 
 # install.packages('rsconnect')
 ```
+
 ```{r}
+# Authorized rsconnect package in order to deploy Shiny for R applications to shiny.io account.
 rsconnect::setAccountInfo(name='tuongjohn',
 			  token='49C8DBAA2EF1F7B5CD386A06DCF0EB97',
 			  secret='b2XBkM4QOXdXImtie5MAsfq5iKXKdMZqTnFsy5jd')
 ```
 
 ```{r}
+# Installed and loaded packages.
 library(tidyverse)
 ```
 
 ```{r}
-read.csv("/Users/User/repos/Project2Tuong/user_behavior_dataset.csv")
+# Read in mobile device usage .csv file as a tibble.
+mobdevdata <- as.tibble(read.csv("/Users/User/repos/Project2Tuong/user_behavior_dataset.csv", header = TRUE))
+
+# Checked to see if there are any missing values in the data set.
+print(colSums(is.na(mobdevdata))) # No missing values
+
+# Checked to see internal structure of mobdevdata (class of each column/how variables are stored, etc.).
+str(mobdevdata)
 ```
 
+```{r}
+# Showed the table and cleaned up.
+head(mobdevdata)
+```
 
+```{r}
+# Created one, two, and three-way tables of categorical variables to explore. The tables are created with one or a combination of these three categorical variables: operating system, gender, and user behavior class. addmargins used to find the row, column, and total sums.
+
+# The one-way table below show that the majority of people use Android operating systems compared to iOS in this table - 554 Android users and 146 iOS users.
+addmargins(table("operating system used?" = mobdevdata$Operating.System))
+
+# The two-way table below show that Android is the more popular mobile device among both genders. For this table, there's more male Android users (292) than female users (262), showcasing males having a slight preference for Androids. iOS shows a similar distribution between genders (74 for female and 72 for male).
+addmargins(table("operating system used?" = mobdevdata$Operating.System, 
+      "  gender" = mobdevdata$Gender))
+
+# The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android uses, especially for user behavior class 2, 3, and 5.
+addmargins(table("operating system used?" = mobdevdata$Operating.System, 
+      "  gender" = mobdevdata$Gender,
+      "user behavior class" = mobdevdata$User.Behavior.Class))
+```
+
+```{r}
+# Created numerical summaries for quantitative variables (screen on time and battery drain) at levels of categorical variables (operating system, gender, and user behavior class).
+
+
+```
 
