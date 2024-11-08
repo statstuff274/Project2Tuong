@@ -11,7 +11,7 @@ editor_options:
 
 ## Introduction
 
-> As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time. As someone who's interested in technology and curious about the public's general use on mobile devices, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application. 
+> As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time and how it affects us. As someone who's interested in technology and curious about the public's general use on mobile devices, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application.
 
 ## Preparing the app!
 
@@ -22,12 +22,17 @@ editor_options:
 
 # Use observeEvent() to look for changes in tab id (Flexible UI Layouts)
 # r4ds examples
+
+# Notes:
+# quantitative variables (screen on time, battery drain, data usage)
+# categorical variables (operating system, gender, and user behavior class)
 ```
 
 ```{r}
 # Installed rsconnect to connect R Studio with Shiny deployment website.
 
 # install.packages('rsconnect')
+install.packages("ggridges")
 ```
 
 ```{r}
@@ -40,6 +45,7 @@ rsconnect::setAccountInfo(name='tuongjohn',
 ```{r}
 # Installed and loaded packages.
 library(tidyverse)
+library(ggridges) # Used for quantile lines in plots
 ```
 
 ```{r}
@@ -65,11 +71,15 @@ head(mobdevdata)
 
 # The one-way table below show that the majority of people use Android operating systems (OS) compared to iOS in this table - 554 Android users and 146 iOS users.
 addmargins(table("operating system used?" = mobdevdata$Operating.System))
+```
 
+```{r}
 # The two-way table below show that Android is the more popular mobile device among both genders. For this table, there's more male Android users (292) than female users (262), showcasing males having a slight preference for Androids. iOS shows a similar distribution between genders (74 for female and 72 for male).
 addmargins(table("operating system used?" = mobdevdata$Operating.System, 
       "  gender" = mobdevdata$Gender))
+```
 
+```{r}
 # The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android users, especially for user behavior class 2, 3, and 5.
 addmargins(table("operating system used?" = mobdevdata$Operating.System, 
       "  gender" = mobdevdata$Gender,
@@ -192,34 +202,77 @@ density_plot5
 ```
 
 ```{r}
-# Plot 6: Created a scatter plot to observe correlations between screen time and data usage.
+# Plot 6: Created a scatter plot to observe correlations between screen time and data usage by operating system.
 
-scatter_plot6 <- ggplot(mobdevdata|>
-                    drop_na(Screen.On.Time..hours.day., Data.Usage..MB.day.), aes(x = Screen.On.Time..hours.day., y = Data.Usage..MB.day.)) +
+scatter_plot6 <- ggplot(mobdevdata,
+                    aes(x = Screen.On.Time..hours.day., y = Data.Usage..MB.day., color = Operating.System)) +
                   geom_jitter(width = 0.2, alpha = 0.6) +
-                  ggtitle(label = "Screen Time and Data Usage",
+                  ggtitle(label = "Screen Time and Data Usage \n by Operating System",
                           subtitle = "Scatter Plot") +
                   theme(plot.title = element_text(hjust = 0.5, face = "bold"),
                         plot.subtitle = element_text(hjust = 0.5)) +
                   labs(x = "Screen Time (hours per day)", 
                        y = "Data Usage \n (megabytes per day)") +
-                  scale_color_brewer(palette = "Accent")
+                  scale_fill_discrete("Operating System")
 scatter_plot6
 
-# Below is a scatter plot between screen time and data usage; this is used in order to observe and determine if there may be a relationship between these two variables.
+# Below is a scatter plot between screen time and data usage by operating system; this is used in order to observe and determine if there may be a relationship between these variables. The plot shows a positive, strong correlation between screen time and data usage for both Android and iOS. As screen time increases, data usage also increases.
 ```
 
+```{r}
+# Plot 7: Used previous scatter plot while faceting with gender.
+
+facet_plot7 <- ggplot(mobdevdata, 
+                    aes(x = Screen.On.Time..hours.day., y = Data.Usage..MB.day., color = Operating.System)) +
+                  geom_jitter(width = 0.2, alpha = 0.35) +
+                  ggtitle(label = "Screen Time and Data Usage \n by Operating System with Gender Facet",
+                          subtitle = "Scatter Plot with Facet") +
+                  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                        plot.subtitle = element_text(hjust = 0.5)) +
+                  labs(x = "Screen Time (hours per day)", 
+                       y = "Data Usage \n (megabytes per day)") +
+                  facet_grid(Gender ~ Operating.System) 
+facet_plot7
+
+# Below, is the previous plot except faceted with gender. First we check and take the correlation between screen time and data usage based on operating system and now we've further subset the data to take gender into account as well. From here we can see that there is a strong, positive correlation between screen time and data usage, even when taking operating system and gender into account. As mentioned before, the main difference is that there are more Android users than iOS users, otherwise they are similar in many aspects - strong, positive correlation with majority of the data points for both operating systems falling between 1 to 2.5 hours of screen time per day.
+```
+
+```{r}
+# Plot 8: Created a ridgeline plot to visualize changes in distributions of data usage and operating system.
+
+quantile_plot8 <- ggplot(mobdevdata,
+                         aes(x = Data.Usage..MB.day., y = Operating.System, fill = factor(stat(quantile)))) + 
+                  stat_density_ridges(
+                          geom = "density_ridges_gradient", calc_ecdf = TRUE,
+                          quantiles = 4, quantile_lines =) +
+                  ggtitle(label = "Changes of Data Usage and Operating System",
+                          subtitle = "Ridgeline Plot") +
+                  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                        plot.subtitle = element_text(hjust = 0.5)) +
+                  scale_fill_viridis_d(name = "Quartiles")
+quantile_plot8
+
+# Using stat_density_ridges from the ggridges package, I've created a plot that visualizes data usage based on amount of mobile devices per operating system. For example, the peak for both mountain ranges on data usage is around 380 to 430 megabytes used per day. After that peak, the amount of users for both operating systems decrease after that. Additionally, this ridgeline plot produces three lines, indicating the quartiles. In this case we have 3 quartiles: 1st, 2nd (the median), and the 3rd. Ridgeplot are a nice way to visualize changes in distribution over time or space.
+```
+
+```{r}
+# Plot 9: Created a bubble plot to look at battery drain, data usage, and number of apps installed across user behavior class.
+
+bubble_plot9 <- ggplot(mobdevdata,
+                    aes(x = Battery.Drain..mAh.day., y = Data.Usage..MB.day., 
+                    size = Number.of.Apps.Installed, color = User.Behavior.Class)) +
+                geom_point(alpha = 0.25) +
+                ggtitle(label = "Relationship between Battery Drain, Data Usage, and \n Number of Apps Installed across User Behavior Class",
+                        subtitle = "Bubble Plot") +
+                theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+                      plot.subtitle = element_text(hjust = 0.5)) +
+                  labs(x = "Battery Drain (mAh per day)", 
+                       y = "Data Usage \n (megabytes per day)")
+bubble_plot9
+
+# A bubble plot, an extension of the scatter plot, is used to look at relationships between three numeric variables, minimally. It in the variables, x, y, and size, battery drain, data usage, and number of apps installed, respectively. Here, the relationship between battery drain (x) and data usage (y) of number of apps installed is represented. I've also added a fourth variable, user behavior class, which is denoted by the color. 
+```
+
+> Mobile device usage is an interesting topic to say the least. Due to the universal and widespread usage of mobile devices, there will always be research conducted to see how our lives are affected by these devices, especially regarding things like how much time we spend on these devices, how battery drain varies based on operating system, if data usage differs based on gender, etc... and from there we may further research on how these different variables may affect our mental/physical health and whatnot. While technology and mobile devices will continue to be an intergral part of our lives, it's important that we do our due diligence and be mindful about our own mobile device usage to ensure it doesn't negatively impact our lives.
 
 
-
-
-
-
-
-
-
-
-
-
-# quantitative variables (screen on time, battery drain, data usage) at levels of 
-# categorical variables (operating system, gender, and user behavior class)
