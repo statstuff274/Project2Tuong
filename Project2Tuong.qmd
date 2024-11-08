@@ -6,7 +6,7 @@ execute:
 format: html
 editor: visual
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ## Introduction
@@ -14,19 +14,6 @@ editor_options:
 > As technology has progressed and become more accessible to the general public over time, it's important to assess how mobile device usage has changed over time and how it affects us. As someone who's interested in technology and curious about the public's general use on mobile devices, I chose to look into the mobile device usage data set, containing 700 data points, to explore and create my application.
 
 ## Preparing the app!
-
-```{r}
-# Addition packages to download/to do from notes:
-# install.packages("shinydashboard") - tabItems() - spinners, tabPanel() (37 Debug)
-# install.packages(shinyalert") - verify values
-
-# Use observeEvent() to look for changes in tab id (Flexible UI Layouts)
-# r4ds examples
-
-# Notes:
-# quantitative variables (screen on time, battery drain, data usage)
-# categorical variables (operating system, gender, and user behavior class)
-```
 
 ```{r}
 # Installed rsconnect to connect R Studio with Shiny deployment website.
@@ -52,7 +39,7 @@ library(ggridges) # Used for quantile lines in plots
 # Read in mobile device usage .csv file as a tibble. --------------------------------
 mobdevdata <- as.tibble(read.csv("/Users/User/repos/Project2Tuong/user_behavior_dataset.csv", header = TRUE))
 
-# Checked to see if there are any missing values in the data set. -------------------
+# Checked to see if there are any missing values in the data set.
 print(colSums(is.na(mobdevdata))) # No missing values!
 
 # Checked to see internal structure of mobdevdata (class of each column/how variables are stored, etc.).
@@ -62,6 +49,13 @@ str(mobdevdata)
 ```{r}
 # Showed the table and cleaned up.
 head(mobdevdata)
+```
+
+```{r}
+# Creating vector numeric variables to reference.
+numeric_vars <- c("Battery Drain (per mAh)" = "Battery.Drain..mAh.day.",
+                  "Data Usage (per MB)" = "Data.Usage..MB.day.", 
+                  "Screen Time (per hour)" = "Screen.On.Time..hours.day.")
 ```
 
 -   Created one, two, and three way contingency tables.
@@ -276,3 +270,16 @@ bubble_plot9
 > Mobile device usage is an interesting topic to say the least. Due to the universal and widespread usage of mobile devices, there will always be research conducted to see how our lives are affected by these devices, especially regarding things like how much time we spend on these devices, how battery drain varies based on operating system, if data usage differs based on gender, etc... and from there we may further research on how these different variables may affect our mental/physical health and whatnot. While technology and mobile devices will continue to be an intergral part of our lives, it's important that we do our due diligence and be mindful about our own mobile device usage to ensure it doesn't negatively impact our lives.
 
 
+```{r}
+# General Notes:
+# Addition packages to download/to do from notes:
+# install.packages("shinydashboard") - tabItems() - spinners, tabPanel() (37 Debug)
+# install.packages(shinyalert") - verify values
+
+# Use observeEvent() to look for changes in tab id (Flexible UI Layouts)
+# r4ds examples
+
+# Notes - variables used:
+# quantitative variables (screen on time, battery drain, data usage)
+# categorical variables (operating system, gender, and user behavior class)
+```

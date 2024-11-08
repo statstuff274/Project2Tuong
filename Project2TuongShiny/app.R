@@ -93,12 +93,16 @@ ui <- fluidPage(
                       value = 30)
         ),
 
-        # Show a plot of the generated distribution
+        # Created main panel
         mainPanel(
           tabsetPanel(
             tabPanel("About",
-                     h3("Mobile Device Usage Analyzation"),
-                     p()),
+                     h2("Mobile Device Usage Analyzation"),
+                     p("The purpose of this application is to observe mobile device usage across different variables to analyze mobile device behavior."),
+                     h3("Available Data to Choose from:"),
+                     p("- You are able to subset information about mobile device usage including device information, usage metrics, user demographics, and user behavioral classifications."),
+                     p("- You can find the following mobile device usage data set by coping and pasting this link in your: https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset?resource=download.")
+                     ),
             tabPanel("Data Download", "placeholder"),
             tabPanel("Data Exploration", "placeholder")
           ), 
