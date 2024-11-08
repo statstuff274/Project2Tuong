@@ -32,7 +32,7 @@ editor_options:
 # Installed rsconnect to connect R Studio with Shiny deployment website.
 
 # install.packages('rsconnect')
-install.packages("ggridges")
+# install.packages("ggridges")
 ```
 
 ```{r}
