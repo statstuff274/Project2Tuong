@@ -222,19 +222,112 @@ Screen.On.Time..hours.day.    Battery.Drain..mAh.day.
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating vector numeric variables to reference.</span></span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating vectors to reference.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>numeric_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Battery Drain (per mAh)"</span> <span class="ot">=</span> <span class="st">"Battery.Drain..mAh.day."</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Data Usage (per MB)"</span> <span class="ot">=</span> <span class="st">"Data.Usage..MB.day."</span>, </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Screen Time (per hour)"</span> <span class="ot">=</span> <span class="st">"Screen.On.Time..hours.day."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Screen Time (per hour)"</span> <span class="ot">=</span> <span class="st">"Screen.On.Time..hours.day."</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>category_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Operating System"</span> <span class="ot">=</span> <span class="st">"Operating.System"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Genders"</span> <span class="ot">=</span> <span class="st">"Gender"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>combined_var <span class="ot">&lt;-</span> <span class="fu">c</span>(category_vars, numeric_vars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Static code for one and two way contingency tables.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating static code for a one way table</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>one_way_table <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var1) {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(data[var1])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Example:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">one_way_table</span>(mobdevdata, <span class="st">"Operating.System"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Operating.System
+Android     iOS 
+    554     146 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating static code for a two way table</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>two_way_table <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var1, var2, <span class="at">name1 =</span> <span class="st">"OperatingSystem"</span>, <span class="at">name2 =</span> <span class="st">"Gender"</span>) {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(data[[var1]], data[[var2]])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Example:</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">two_way_table</span>(mobdevdata, <span class="st">"Operating.System"</span>, <span class="st">"Gender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         
+          Female Male
+  Android    262  292
+  iOS         74   72</code></pre>
+</div>
+</div>
+<ul>
+<li>Static code for numerical summary by category.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating static code for numerical summary</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> num_sum_by_cat <span class="ot">&lt;-</span> <span class="cf">function</span>(data, num_vars, cat_vars) {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(cat_vars))) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(num_vars),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">list</span>(<span class="at">min =</span> min,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">median =</span> median,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">max =</span> max,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">mean =</span> mean,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sd =</span> sd)))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Example:</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">num_sum_by_cat</span>(mobdevdata, <span class="st">"Battery.Drain..mAh.day."</span>, <span class="st">"Gender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  Gender Battery.Drain..mAh.day.…¹ Battery.Drain..mAh.d…² Battery.Drain..mAh.d…³
+  &lt;chr&gt;                      &lt;int&gt;                  &lt;dbl&gt;                  &lt;int&gt;
+1 Female                       302                   1500                   2993
+2 Male                         303                   1530                   2971
+# ℹ abbreviated names: ¹​Battery.Drain..mAh.day._min,
+#   ²​Battery.Drain..mAh.day._median, ³​Battery.Drain..mAh.day._max
+# ℹ 2 more variables: Battery.Drain..mAh.day._mean &lt;dbl&gt;,
+#   Battery.Drain..mAh.day._sd &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<ul>
+<li>Static code for plots.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var, <span class="at">fill_var =</span> var) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> data <span class="sc">|&gt;</span> <span class="fu">drop_na</span>({{ var }}), </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">aes</span>(<span class="at">x =</span> .data[[var]], <span class="at">fill =</span> .data[[fill_var]])) <span class="sc">+</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="fu">paste</span>(<span class="st">"Distribution of"</span>, var)) <span class="sc">+</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Bar Graph of"</span>, var), </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> var, </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span> </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_discrete</span>(<span class="at">name =</span> fill_var)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">bar_plot</span>(mobdevdata, <span class="st">"Operating.System"</span>, <span class="st">"Operating.System"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <ul>
 <li>Created one, two, and three way contingency tables.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Created one, two, and three-way tables of categorical variables to explore. The tables are created with one or a combination of these three categorical variables: operating system, gender, and user behavior class. addmargins is used to find the row, column, and total sums.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The one-way table below show that the majority of people use Android operating systems (OS) compared to iOS in this table - 554 Android users and 146 iOS users.</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Created one, two, and three-way tables of categorical variables to explore. The tables are created with one or a combination of these three categorical variables: operating system, gender, and user behavior class. addmargins is used to find the row, column, and total sums.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The one-way table below show that the majority of people use Android operating systems (OS) compared to iOS in this table - 554 Android users and 146 iOS users.</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>operating system used?
 Android     iOS     Sum 
@@ -242,9 +335,9 @@ Android     iOS     Sum
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The two-way table below show that Android is the more popular mobile device among both genders. For this table, there's more male Android users (292) than female users (262), showcasing males having a slight preference for Androids. iOS shows a similar distribution between genders (74 for female and 72 for male).</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  gender"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Gender))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The two-way table below show that Android is the more popular mobile device among both genders. For this table, there's more male Android users (292) than female users (262), showcasing males having a slight preference for Androids. iOS shows a similar distribution between genders (74 for female and 72 for male).</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  gender"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Gender))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        gender
 operating system used? Female Male Sum
@@ -254,10 +347,10 @@ operating system used? Female Male Sum
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android users, especially for user behavior class 2, 3, and 5.</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System, </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  gender"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Gender,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"user behavior class"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>User.Behavior.Class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The three-way table below takes into account operating system and gender across user behavior classification (range: 1 - 5, light to extreme/heavy usage phone usage). For this table, when looking at iOS users, the distribution is fairly even between genders when looking at user behavior class... However, there's more variability across across genders when looking at Android users, especially for user behavior class 2, 3, and 5.</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="st">"operating system used?"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Operating.System, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"  gender"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>Gender,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"user behavior class"</span> <span class="ot">=</span> mobdevdata<span class="sc">$</span>User.Behavior.Class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>, , user behavior class = 1
 
@@ -312,22 +405,22 @@ operating system used? Female Male Sum
 <li>Created numerical summaries for quantitative variables at levels of categorical variables.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Created numerical summaries for quantitative variables (screen on time, battery drain, data usage) at levels of categorical variables (operating system, gender, and user behavior class). Here we're assigning num_summary and piping the mobdevdata data set to be grouped by the levels of the categorical variables then to summarize and provide Q1, Q3, min, max, mean, median, and standard deviation of the quantitative variables.</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>num_summary <span class="ot">&lt;-</span> mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Operating.System, Gender, User.Behavior.Class) <span class="sc">|&gt;</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(Screen.On.Time..hours.day.,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                   Battery.Drain..mAh.day.,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                   Data.Usage..MB.day.),</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">list</span>(<span class="at">min =</span> min,</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Q1 =</span> <span class="sc">~</span><span class="fu">quantile</span>(.x, <span class="at">probs =</span> <span class="fl">0.25</span>),</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">median =</span> median,</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Q3 =</span> <span class="sc">~</span><span class="fu">quantile</span>(.x, <span class="at">probs =</span> <span class="fl">0.75</span>),</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">max =</span> max,</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">mean =</span> mean,</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sd =</span> sd</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                 )))</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>num_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Created numerical summaries for quantitative variables (screen on time, battery drain, data usage) at levels of categorical variables (operating system, gender, and user behavior class). Here we're assigning num_summary and piping the mobdevdata data set to be grouped by the levels of the categorical variables then to summarize and provide Q1, Q3, min, max, mean, median, and standard deviation of the quantitative variables.</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>num_summary <span class="ot">&lt;-</span> mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Operating.System, Gender, User.Behavior.Class) <span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(Screen.On.Time..hours.day.,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                   Battery.Drain..mAh.day.,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                   Data.Usage..MB.day.),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">list</span>(<span class="at">min =</span> min,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Q1 =</span> <span class="sc">~</span><span class="fu">quantile</span>(.x, <span class="at">probs =</span> <span class="fl">0.25</span>),</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">median =</span> median,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Q3 =</span> <span class="sc">~</span><span class="fu">quantile</span>(.x, <span class="at">probs =</span> <span class="fl">0.75</span>),</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">max =</span> max,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">mean =</span> mean,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">sd =</span> sd</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>                 )))</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>num_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 × 24
 # Groups:   Operating.System, Gender [4]
@@ -366,113 +459,19 @@ operating system used? Female Male Sum
 <li>Create at least six plots. Four must display multivariate information.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 1: Created a bar graph plot showcasing mobile device owned by operating system (Android users versus iOS users).</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>bar_plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">drop_na</span>(Operating.System),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> Operating.System, <span class="at">fill =</span> Operating.System)) <span class="sc">+</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">ggtitle</span>(<span class="st">"Mobile Operating Systems Used"</span>) <span class="sc">+</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Bar Graph Plot"</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">"Operating System"</span>,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">"Amount of Mobile Devices"</span>) <span class="sc">+</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>bar_plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, majority of mobile phone users from this data set are Android users. This is interesting because I didn't think Android had so much dominance in the mobile operating system; I always though it was a little closer, maybe 60/40, Android to iOS.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Created a stacked bar plot showcasing the mobile device operating system usage by gender.</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>stacked_plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">drop_na</span>(Operating.System),</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">x =</span> Operating.System, <span class="at">fill =</span> Gender)) <span class="sc">+</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ggtitle</span>(<span class="st">"Mobile Operating Systems by Gender"</span>) <span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Stacked Bar Plot"</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">x =</span> <span class="st">"Operating System"</span>,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> <span class="st">"Amount of Mobile Devices </span><span class="sc">\n</span><span class="st"> by Gender"</span>) <span class="sc">+</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>stacked_plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, this plot visually represents operating system usage by gender. The previous plot only showed the amount of mobile device users by operating, where as this plot further breaks it down and showcases the proportion of males/females that own a phone based on whether it's an Android or iOS. While Android has more users than both female and male iOS users, respectively, the distributions between male/female within their own operating system are pretty similar, close to 50/50 by gender.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 3: Created a side by side bar plot showcasing operating system usage based on user behavior class.</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>side_plot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">drop_na</span>(User.Behavior.Class),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> User.Behavior.Class, <span class="at">fill =</span> Operating.System)) <span class="sc">+</span> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Mobile Operating Systems by User Behavior Class"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">subtitle =</span> <span class="st">"Side-by-Side Bar Plot"</span>) <span class="sc">+</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"User Behavior Class </span><span class="sc">\n</span><span class="st"> (1 = light usage, ..., 5 = heavy usage)"</span>,</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> <span class="st">"Amount of Mobile Devices </span><span class="sc">\n</span><span class="st"> by Operating System"</span>) <span class="sc">+</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>side_plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, this side-by-side bar plot visualizes user behavior based on different operating systems. Side-by-side plots can sometimes allow for easier visual comparison of the values compared to stacked bar plots. From first glance, the total amount of light to extreme users per operating system are pretty similar and close in overall proportion. Class 1, light iOS users seem to be slightly different than rest, with a little less in number compared to the other iOS users by behavior, but not by much.  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Created a histogram to observe the frequency of daily mobile device battery drain by mobile operating system.</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>histogram_plot4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Battery.Drain..mAh.day.)) <span class="sc">+</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> Battery.Drain..mAh.day., <span class="at">fill =</span> Operating.System), </span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">binwidth =</span> <span class="dv">500</span>, <span class="at">alpha =</span> .<span class="dv">75</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Battery Drain by Operating System"</span>,</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">subtitle =</span> <span class="st">"Histogram Plot"</span>) <span class="sc">+</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Daily Battery Drain (by mAh)"</span>,</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>histogram_plot4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen below, this histogram shows the frequency/count at which the amount of battery mAh of phones are drained based on operating system. Unlike a stacked bar graph which compares two categorical variables and visually represents the length/proportion of the total bar, histograms showcase a distribution of continuous data/is a graphical representation of quantitative data. So when looking at this plot below, roughly 150 daily Android users and about 30-35 iOS users will drain their phone battery by 240 to 750 mAh everyday. As for those who drain their battery by an average of 3000 mAh (between 2750 and 3250) every day, that number is much less at about 47 Android users and about 17 iOS users. When comparing the frequencies across both operating systems, both OS's seem to have a very similar visual pattern of battery drain proportionally based on mAh from 750 mAh to 2750 mAh.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 5: Created a density plot (smoothed histogram) to observe screen time per day based on gender.</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>density_plot5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Screen.On.Time..hours.day.), <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">fill =</span> Gender)) <span class="sc">+</span> </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time by Gender"</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">subtitle =</span> <span class="st">"Density Plot (Smoothed Histogram)"</span>) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>,</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Gender"</span>)                </span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>density_plot5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 1: Created a bar graph plot showcasing mobile device owned by operating system (Android users versus iOS users).</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>bar_plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">drop_na</span>(Operating.System),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> Operating.System, <span class="at">fill =</span> Operating.System)) <span class="sc">+</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">ggtitle</span>(<span class="st">"Mobile Operating Systems Used"</span>) <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Bar Graph Plot"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">"Operating System"</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">"Amount of Mobile Devices"</span>) <span class="sc">+</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>bar_plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -480,22 +479,22 @@ operating system used? Female Male Sum
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a density plot, a smooth curve that shows the distribution of the data. Similar to histograms except with an added curve on top, the curve represents the proportion of the data in the ranges rather than the frequency/counts like a histogram would. The x-axis showcases screen time per day and the y-axis represents the density, meaning the probability/how probable the different intervals for screen time are for each gender. Looking at this plot, we can see that males have higher screen times overall; however, females do seem to have a peak average of more screen time when hitting 3 hour and 25 minute mark to about the 7 hour and 25 minute mark. Interesting - I wonder why that might be the case.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, majority of mobile phone users from this data set are Android users. This is interesting because I didn't think Android had so much dominance in the mobile operating system; I always though it was a little closer, maybe 60/40, Android to iOS.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 6: Created a scatter plot to observe correlations between screen time and data usage by operating system.</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>scatter_plot6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">y =</span> Data.Usage..MB.day., <span class="at">color =</span> Operating.System)) <span class="sc">+</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time and Data Usage </span><span class="sc">\n</span><span class="st"> by Operating System"</span>,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Scatter Plot"</span>) <span class="sc">+</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>, </span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>) <span class="sc">+</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>scatter_plot6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Created a stacked bar plot showcasing the mobile device operating system usage by gender.</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>stacked_plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">drop_na</span>(Operating.System),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">x =</span> Operating.System, <span class="at">fill =</span> Gender)) <span class="sc">+</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ggtitle</span>(<span class="st">"Mobile Operating Systems by Gender"</span>) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Stacked Bar Plot"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">x =</span> <span class="st">"Operating System"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> <span class="st">"Amount of Mobile Devices </span><span class="sc">\n</span><span class="st"> by Gender"</span>) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>stacked_plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -503,22 +502,23 @@ operating system used? Female Male Sum
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a scatter plot between screen time and data usage by operating system; this is used in order to observe and determine if there may be a relationship between these variables. The plot shows a positive, strong correlation between screen time and data usage for both Android and iOS. As screen time increases, data usage also increases.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, this plot visually represents operating system usage by gender. The previous plot only showed the amount of mobile device users by operating, where as this plot further breaks it down and showcases the proportion of males/females that own a phone based on whether it's an Android or iOS. While Android has more users than both female and male iOS users, respectively, the distributions between male/female within their own operating system are pretty similar, close to 50/50 by gender.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 7: Used previous scatter plot while faceting with gender.</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>facet_plot7 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata, </span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">y =</span> Data.Usage..MB.day., <span class="at">color =</span> Operating.System)) <span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time and Data Usage </span><span class="sc">\n</span><span class="st"> by Operating System with Gender Facet"</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Scatter Plot with Facet"</span>) <span class="sc">+</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>, </span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>) <span class="sc">+</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">facet_grid</span>(Gender <span class="sc">~</span> Operating.System) </span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>facet_plot7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 3: Created a side by side bar plot showcasing operating system usage based on user behavior class.</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>side_plot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">drop_na</span>(User.Behavior.Class),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> User.Behavior.Class, <span class="at">fill =</span> Operating.System)) <span class="sc">+</span> </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span> </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Mobile Operating Systems by User Behavior Class"</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">subtitle =</span> <span class="st">"Side-by-Side Bar Plot"</span>) <span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"User Behavior Class </span><span class="sc">\n</span><span class="st"> (1 = light usage, ..., 5 = heavy usage)"</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> <span class="st">"Amount of Mobile Devices </span><span class="sc">\n</span><span class="st"> by Operating System"</span>) <span class="sc">+</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>side_plot3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -526,22 +526,23 @@ operating system used? Female Male Sum
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below, is the previous plot except faceted with gender. First we check and take the correlation between screen time and data usage based on operating system and now we've further subset the data to take gender into account as well. From here we can see that there is a strong, positive correlation between screen time and data usage, even when taking operating system and gender into account. As mentioned before, the main difference is that there are more Android users than iOS users, otherwise they are similar in many aspects - strong, positive correlation with majority of the data points for both operating systems falling between 1 to 2.5 hours of screen time per day.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen here, this side-by-side bar plot visualizes user behavior based on different operating systems. Side-by-side plots can sometimes allow for easier visual comparison of the values compared to stacked bar plots. From first glance, the total amount of light to extreme users per operating system are pretty similar and close in overall proportion. Class 1, light iOS users seem to be slightly different than rest, with a little less in number compared to the other iOS users by behavior, but not by much.  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 8: Created a ridgeline plot to visualize changes in distributions of data usage and operating system.</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>quantile_plot8 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">aes</span>(<span class="at">x =</span> Data.Usage..MB.day., <span class="at">y =</span> Operating.System, <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span> </span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">stat_density_ridges</span>(</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>, <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">quantiles =</span> <span class="dv">4</span>, <span class="at">quantile_lines =</span>) <span class="sc">+</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Changes of Data Usage and Operating System"</span>,</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Ridgeline Plot"</span>) <span class="sc">+</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Quartiles"</span>)</span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>quantile_plot8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Created a histogram to observe the frequency of daily mobile device battery drain by mobile operating system.</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>histogram_plot4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Battery.Drain..mAh.day.)) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> Battery.Drain..mAh.day., <span class="at">fill =</span> Operating.System), </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">binwidth =</span> <span class="dv">500</span>, <span class="at">alpha =</span> .<span class="dv">75</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Battery Drain by Operating System"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">subtitle =</span> <span class="st">"Histogram Plot"</span>) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Daily Battery Drain (by mAh)"</span>,</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>histogram_plot4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -549,22 +550,22 @@ operating system used? Female Male Sum
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using stat_density_ridges from the ggridges package, I've created a plot that visualizes data usage based on amount of mobile devices per operating system. For example, the peak for both mountain ranges on data usage is around 380 to 430 megabytes used per day. After that peak, the amount of users for both operating systems decrease after that. Additionally, this ridgeline plot produces three lines, indicating the quartiles. In this case we have 3 quartiles: 1st, 2nd (the median), and the 3rd. Ridgeplot are a nice way to visualize changes in distribution over time or space.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As seen below, this histogram shows the frequency/count at which the amount of battery mAh of phones are drained based on operating system. Unlike a stacked bar graph which compares two categorical variables and visually represents the length/proportion of the total bar, histograms showcase a distribution of continuous data/is a graphical representation of quantitative data. So when looking at this plot below, roughly 150 daily Android users and about 30-35 iOS users will drain their phone battery by 240 to 750 mAh everyday. As for those who drain their battery by an average of 3000 mAh (between 2750 and 3250) every day, that number is much less at about 47 Android users and about 17 iOS users. When comparing the frequencies across both operating systems, both OS's seem to have a very similar visual pattern of battery drain proportionally based on mAh from 750 mAh to 2750 mAh.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 9: Created a bubble plot to look at battery drain, data usage, and number of apps installed across user behavior class.</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>bubble_plot9 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Battery.Drain..mAh.day., <span class="at">y =</span> Data.Usage..MB.day., </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> Number.of.Apps.Installed, <span class="at">color =</span> User.Behavior.Class)) <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Relationship between Battery Drain, Data Usage, and </span><span class="sc">\n</span><span class="st"> Number of Apps Installed across User Behavior Class"</span>,</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="st">"Bubble Plot"</span>) <span class="sc">+</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Battery Drain (mAh per day)"</span>, </span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>)</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>bubble_plot9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 5: Created a density plot (smoothed histogram) to observe screen time per day based on gender.</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>density_plot5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata <span class="sc">|&gt;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">drop_na</span>(Screen.On.Time..hours.day.), <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">fill =</span> Gender)) <span class="sc">+</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time by Gender"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">subtitle =</span> <span class="st">"Density Plot (Smoothed Histogram)"</span>) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Gender"</span>)                </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>density_plot5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -572,23 +573,115 @@ operating system used? Female Male Sum
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A bubble plot, an extension of the scatter plot, is used to look at relationships between three numeric variables, minimally. It in the variables, x, y, and size, battery drain, data usage, and number of apps installed, respectively. Here, the relationship between battery drain (x) and data usage (y) of number of apps installed is represented. I've also added a fourth variable, user behavior class, which is denoted by the color. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a density plot, a smooth curve that shows the distribution of the data. Similar to histograms except with an added curve on top, the curve represents the proportion of the data in the ranges rather than the frequency/counts like a histogram would. The x-axis showcases screen time per day and the y-axis represents the density, meaning the probability/how probable the different intervals for screen time are for each gender. Looking at this plot, we can see that males have higher screen times overall; however, females do seem to have a peak average of more screen time when hitting 3 hour and 25 minute mark to about the 7 hour and 25 minute mark. Interesting - I wonder why that might be the case.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 6: Created a scatter plot to observe correlations between screen time and data usage by operating system.</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>scatter_plot6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">y =</span> Data.Usage..MB.day., <span class="at">color =</span> Operating.System)) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time and Data Usage </span><span class="sc">\n</span><span class="st"> by Operating System"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Scatter Plot"</span>) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>, </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>) <span class="sc">+</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_discrete</span>(<span class="st">"Operating System"</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>scatter_plot6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below is a scatter plot between screen time and data usage by operating system; this is used in order to observe and determine if there may be a relationship between these variables. The plot shows a positive, strong correlation between screen time and data usage for both Android and iOS. As screen time increases, data usage also increases.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 7: Used previous scatter plot while faceting with gender.</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>facet_plot7 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata, </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Screen.On.Time..hours.day., <span class="at">y =</span> Data.Usage..MB.day., <span class="at">color =</span> Operating.System)) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Screen Time and Data Usage </span><span class="sc">\n</span><span class="st"> by Operating System with Gender Facet"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Scatter Plot with Facet"</span>) <span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Screen Time (hours per day)"</span>, </span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>) <span class="sc">+</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">facet_grid</span>(Gender <span class="sc">~</span> Operating.System) </span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>facet_plot7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Below, is the previous plot except faceted with gender. First we check and take the correlation between screen time and data usage based on operating system and now we've further subset the data to take gender into account as well. From here we can see that there is a strong, positive correlation between screen time and data usage, even when taking operating system and gender into account. As mentioned before, the main difference is that there are more Android users than iOS users, otherwise they are similar in many aspects - strong, positive correlation with majority of the data points for both operating systems falling between 1 to 2.5 hours of screen time per day.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 8: Created a ridgeline plot to visualize changes in distributions of data usage and operating system.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>quantile_plot8 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">aes</span>(<span class="at">x =</span> Data.Usage..MB.day., <span class="at">y =</span> Operating.System, <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span> </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">stat_density_ridges</span>(</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>, <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">quantiles =</span> <span class="dv">4</span>, <span class="at">quantile_lines =</span>) <span class="sc">+</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Changes of Data Usage and Operating System"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">"Ridgeline Plot"</span>) <span class="sc">+</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Quartiles"</span>)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>quantile_plot8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using stat_density_ridges from the ggridges package, I've created a plot that visualizes data usage based on amount of mobile devices per operating system. For example, the peak for both mountain ranges on data usage is around 380 to 430 megabytes used per day. After that peak, the amount of users for both operating systems decrease after that. Additionally, this ridgeline plot produces three lines, indicating the quartiles. In this case we have 3 quartiles: 1st, 2nd (the median), and the 3rd. Ridgeplot are a nice way to visualize changes in distribution over time or space.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 9: Created a bubble plot to look at battery drain, data usage, and number of apps installed across user behavior class.</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>bubble_plot9 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mobdevdata,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> Battery.Drain..mAh.day., <span class="at">y =</span> Data.Usage..MB.day., </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> Number.of.Apps.Installed, <span class="at">color =</span> User.Behavior.Class)) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Relationship between Battery Drain, Data Usage, and </span><span class="sc">\n</span><span class="st"> Number of Apps Installed across User Behavior Class"</span>,</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="st">"Bubble Plot"</span>) <span class="sc">+</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Battery Drain (mAh per day)"</span>, </span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="st">"Data Usage </span><span class="sc">\n</span><span class="st"> (megabytes per day)"</span>)</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>bubble_plot9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Project2Tuong_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A bubble plot, an extension of the scatter plot, is used to look at relationships between three numeric variables, minimally. It in the variables, x, y, and size, battery drain, data usage, and number of apps installed, respectively. Here, the relationship between battery drain (x) and data usage (y) of number of apps installed is represented. I've also added a fourth variable, user behavior class, which is denoted by the color. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p>Mobile device usage is an interesting topic to say the least. Due to the universal and widespread usage of mobile devices, there will always be research conducted to see how our lives are affected by these devices, especially regarding things like how much time we spend on these devices, how battery drain varies based on operating system, if data usage differs based on gender, etc… and from there we may further research on how these different variables may affect our mental/physical health and whatnot. While technology and mobile devices will continue to be an intergral part of our lives, it’s important that we do our due diligence and be mindful about our own mobile device usage to ensure it doesn’t negatively impact our lives.</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># General Notes:</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Addition packages to download/to do from notes:</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("shinydashboard") - tabItems() - spinners, tabPanel() (37 Debug)</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(shinyalert") - verify values</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use observeEvent() to look for changes in tab id (Flexible UI Layouts)</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># r4ds examples</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Notes - variables used:</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co"># quantitative variables (screen on time, battery drain, data usage)</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co"># categorical variables (operating system, gender, and user behavior class)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># General Notes:</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Addition packages to download/to do from notes:</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("shinydashboard") - tabItems() - spinners, tabPanel() (37 Debug)</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(shinyalert") - verify values</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use observeEvent() to look for changes in tab id (Flexible UI Layouts)</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># r4ds examples</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Notes - variables used:</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># quantitative variables (screen on time, battery drain, data usage)</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co"># categorical variables (operating system, gender, and user behavior class)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
