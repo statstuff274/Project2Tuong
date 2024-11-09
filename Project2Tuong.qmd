@@ -126,6 +126,7 @@ bar_plot(mobdevdata, "Operating.System", "Operating.System")
 
 
 
+
 -   Created one, two, and three way contingency tables.
 
 ```{r}
@@ -336,6 +337,11 @@ bubble_plot9
 ```
 
 > Mobile device usage is an interesting topic to say the least. Due to the universal and widespread usage of mobile devices, there will always be research conducted to see how our lives are affected by these devices, especially regarding things like how much time we spend on these devices, how battery drain varies based on operating system, if data usage differs based on gender, etc... and from there we may further research on how these different variables may affect our mental/physical health and whatnot. While technology and mobile devices will continue to be an intergral part of our lives, it's important that we do our due diligence and be mindful about our own mobile device usage to ensure it doesn't negatively impact our lives.
+
+```{r}
+library(rsconnect)
+    rsconnect::deployApp('Users/User/repos/Project2Tuong/Protect2TuongShiny/app.R')
+```
 
 
 ```{r}

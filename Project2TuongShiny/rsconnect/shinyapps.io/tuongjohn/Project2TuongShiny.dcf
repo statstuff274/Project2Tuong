@@ -1,0 +1,12 @@
+name: Project2TuongShiny
+title: Project2TuongShiny
+username: tuongjohn
+account: tuongjohn
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13283712
+bundleId: 9337761
+url: https://tuongjohn.shinyapps.io/Project2TuongShiny/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
