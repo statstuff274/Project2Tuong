@@ -25,7 +25,7 @@ library(ggplot2)
 library(stringr)
 library(DT)
 
-source("Project2Tuong.qmd")
+source("functions.R")
 
 # Time for application creation. I will be using the base app.R template and a bit of the template from my first Shiny App project to reference.
 

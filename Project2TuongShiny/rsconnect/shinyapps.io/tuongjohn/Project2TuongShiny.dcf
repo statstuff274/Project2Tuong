@@ -5,7 +5,7 @@ account: tuongjohn
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13283712
-bundleId: 9337761
+bundleId: 9337773
 url: https://tuongjohn.shinyapps.io/Project2TuongShiny/
 version: 1
 asMultiple: FALSE
